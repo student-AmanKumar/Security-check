@@ -821,7 +821,6 @@ and
 
 <script>
 
-
 /* =========================
    ELEMENTS
 ========================= */
@@ -845,6 +844,17 @@ const hackScreen =
 let packets = 18342;
 
 let started = Date.now();
+
+
+/* =========================
+   HACK SOUND
+========================= */
+
+const hackSound =
+    new Audio("sounds/vibration.mp3");
+
+hackSound.preload = "auto";
+hackSound.volume = 1.0;
 
 
 /* =========================
@@ -1134,18 +1144,34 @@ setTimeout(() => {
 
 
     /* =========================
-       STRONG VIBRATION
+       PLAY MP3
+    ========================= */
+
+    hackSound.currentTime = 0;
+
+    hackSound.play().catch(error => {
+
+        console.log(
+            "Audio autoplay blocked:",
+            error
+        );
+
+    });
+
+
+    /* =========================
+       DEVICE VIBRATION
     ========================= */
 
     if("vibrate" in navigator){
 
         navigator.vibrate([
 
-            1000, 200,
             1000, 150,
-            1200, 200,
             1000, 150,
-            1500, 250,
+            1200, 150,
+            1000, 150,
+            1500, 200,
             1000
 
         ]);
@@ -1229,8 +1255,7 @@ document.addEventListener(
 
    When browser history goes back,
    the page adds its current state
-   again so the prank page remains
-   active where browser behavior
+   again where browser behavior
    allows it.
 ========================= */
 
