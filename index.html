@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0, user-scalable=no">
+
+<title>System Security</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+
+body{
+    background:#000;
+    color:#00ff55;
+    font-family:Consolas,"Courier New",monospace;
+    user-select:none;
+    -webkit-user-select:none;
+    -webkit-touch-callout:none;
+}
+
+/* =========================
+   SCREEN EFFECT
+========================= */
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:50;
+    pointer-events:none;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(0,255,80,.035) 0px,
+            rgba(0,255,80,.035) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+}
+
+/* =========================
+   TERMINAL
+========================= */
+
+#terminal{
+    position:fixed;
+    inset:0;
+
+    width:100%;
+    height:100dvh;
+
+    display:flex;
+    flex-direction:column;
+
+    overflow:hidden;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(0,255,70,.045),
+            #000 70%
+        );
+}
+
+/* TOP BAR */
+
+.header{
+    height:42px;
+    min-height:42px;
+
+    display:flex;
+    align-items:center;
+
+    gap:8px;
+    padding:0 14px;
+
+    background:#030a05;
+    border-bottom:1px solid #123c20;
+}
+
+.dot{
+    width:10px;
+    height:10px;
+
+    flex-shrink:0;
+
+    border-radius:50%;
+
+    background:#00ff55;
+    box-shadow:0 0 8px #00ff55;
+}
+
+.dot:nth-child(2){
+    background:#ffd000;
+    box-shadow:0 0 8px #ffd000;
+}
+
+.dot:nth-child(3){
+    background:#ff3155;
+    box-shadow:0 0 8px #ff3155;
+}
+
+.header-title{
+    margin-left:7px;
+
+    color:#559269;
+
+    font-size:10px;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+/* MAIN */
+
+.main{
+    position:relative;
+
+    flex:1;
+    min-height:0;
+
+    padding:15px;
+
+    overflow:hidden;
+}
+
+.brand{
+    color:#00ff55;
+
+    font-size:clamp(18px,3vw,30px);
+
+    font-weight:900;
+
+    letter-spacing:3px;
+
+    line-height:1.1;
+
+    text-shadow:
+        0 0 12px #00ff55;
+}
+
+.status{
+    margin-top:5px;
+
+    color:#417e51;
+
+    font-size:10px;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+/* LOG AREA */
+
+#logs{
+    position:absolute;
+
+    left:15px;
+    right:15px;
+
+    top:85px;
+    bottom:45px;
+
+    overflow:hidden;
+
+    font-size:clamp(9px,1.4vw,12px);
+
+    line-height:1.6;
+
+    word-break:break-all;
+}
+
+.log{
+    width:100%;
+
+    min-height:18px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+    text-overflow:clip;
+
+    opacity:.93;
+}
+
+.time{
+    color:#397448;
+}
+
+.ok{
+    color:#00ff55;
+}
+
+.warn{
+    color:#ffd000;
+}
+
+.danger{
+    color:#ff3155;
+
+    text-shadow:
+        0 0 7px rgba(255,49,85,.7);
+}
+
+.data{
+    color:#82ffac;
+}
+
+/* BOTTOM STATUS */
+
+#bottom{
+    position:absolute;
+
+    left:15px;
+    right:15px;
+    bottom:10px;
+
+    height:27px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:10px;
+
+    border-top:1px solid #092612;
+
+    padding-top:7px;
+
+    color:#397448;
+
+    font-size:9px;
+}
+
+.live{
+    color:#00ff55;
+
+    text-shadow:
+        0 0 7px #00ff55;
+}
+
+/* =========================
+   HACK SCREEN
+========================= */
+
+#hackScreen{
+    display:none;
+
+    position:fixed;
+    inset:0;
+
+    z-index:100;
+
+    width:100%;
+    height:100dvh;
+
+    overflow:hidden;
+
+    background:#000;
+
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
+    padding:
+        max(20px,env(safe-area-inset-top))
+        20px
+        max(20px,env(safe-area-inset-bottom));
+}
+
+.hackBox{
+    width:100%;
+    max-width:1100px;
+}
+
+.warning{
+    font-size:clamp(42px,9vw,100px);
+
+    line-height:1;
+
+    animation:
+        warningPulse .35s infinite alternate;
+}
+
+@keyframes warningPulse{
+    from{
+        transform:scale(1);
+        opacity:.7;
+    }
+
+    to{
+        transform:scale(1.08);
+        opacity:1;
+    }
+}
+
+.hacked{
+    margin-top:18px;
+
+    color:#ff174d;
+
+    font-family:Arial,Helvetica,sans-serif;
+
+    font-weight:1000;
+
+    font-size:
+        clamp(
+            38px,
+            8vw,
+            105px
+        );
+
+    line-height:.95;
+
+    letter-spacing:
+        clamp(-3px,-.2vw,-1px);
+
+    text-shadow:
+        0 0 8px #ff174d,
+        0 0 25px #ff174d,
+        0 0 60px rgba(255,23,77,.8);
+
+    animation:
+        glitch .09s infinite alternate;
+}
+
+@keyframes glitch{
+
+    0%{
+        transform:translate(0);
+    }
+
+    25%{
+        transform:translate(-3px,1px);
+    }
+
+    50%{
+        transform:translate(2px,-1px);
+    }
+
+    75%{
+        transform:translate(3px,1px);
+    }
+
+    100%{
+        transform:translate(-1px,-1px);
+    }
+}
+
+.critical{
+    margin-top:22px;
+
+    color:#ff5d7c;
+
+    font-size:
+        clamp(
+            9px,
+            2vw,
+            15px
+        );
+
+    letter-spacing:
+        clamp(1px,1vw,4px);
+
+    line-height:1.5;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width:768px){
+
+    .header{
+        height:40px;
+        min-height:40px;
+
+        padding:0 11px;
+    }
+
+    .header-title{
+        font-size:9px;
+    }
+
+    .main{
+        padding:12px;
+    }
+
+    .brand{
+        font-size:22px;
+        letter-spacing:2px;
+    }
+
+    .status{
+        font-size:9px;
+    }
+
+    #logs{
+        left:12px;
+        right:12px;
+
+        top:78px;
+        bottom:43px;
+
+        font-size:10px;
+        line-height:1.52;
+    }
+
+    #bottom{
+        left:12px;
+        right:12px;
+
+        font-size:8px;
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width:480px){
+
+    .header{
+        height:37px;
+        min-height:37px;
+
+        padding:0 9px;
+
+        gap:6px;
+    }
+
+    .dot{
+        width:8px;
+        height:8px;
+    }
+
+    .header-title{
+        margin-left:4px;
+
+        font-size:8px;
+
+        letter-spacing:.4px;
+    }
+
+    .main{
+        padding:10px;
+    }
+
+    .brand{
+        font-size:18px;
+
+        letter-spacing:1.5px;
+    }
+
+    .status{
+        margin-top:3px;
+
+        font-size:8px;
+    }
+
+    #logs{
+        left:10px;
+        right:10px;
+
+        top:67px;
+        bottom:40px;
+
+        font-size:8px;
+
+        line-height:1.55;
+    }
+
+    .log{
+        min-height:16px;
+
+        white-space:nowrap;
+
+        overflow:hidden;
+    }
+
+    #bottom{
+        left:10px;
+        right:10px;
+
+        bottom:7px;
+
+        height:25px;
+
+        padding-top:6px;
+
+        font-size:7px;
+
+        gap:5px;
+    }
+
+    .hacked{
+        margin-top:12px;
+
+        font-size:
+            clamp(
+                35px,
+                11vw,
+                58px
+            );
+
+        line-height:.98;
+
+        letter-spacing:-2px;
+    }
+
+    .warning{
+        font-size:50px;
+    }
+
+    .critical{
+        margin-top:17px;
+
+        font-size:9px;
+
+        letter-spacing:1.5px;
+    }
+}
+
+
+/* =========================
+   VERY SMALL PHONES
+========================= */
+
+@media (max-width:360px){
+
+    .header-title{
+        font-size:7px;
+    }
+
+    .brand{
+        font-size:16px;
+    }
+
+    .status{
+        font-size:7px;
+    }
+
+    #logs{
+        font-size:7px;
+        line-height:1.5;
+
+        top:62px;
+    }
+
+    #bottom{
+        font-size:6.5px;
+    }
+
+    .hacked{
+        font-size:33px;
+    }
+
+    .warning{
+        font-size:43px;
+    }
+
+    .critical{
+        font-size:8px;
+    }
+}
+
+
+/* =========================
+   LANDSCAPE MOBILE
+========================= */
+
+@media (max-height:500px) and (orientation:landscape){
+
+    .header{
+        height:32px;
+        min-height:32px;
+    }
+
+    .main{
+        padding:8px;
+    }
+
+    .brand{
+        font-size:16px;
+    }
+
+    .status{
+        font-size:7px;
+    }
+
+    #logs{
+        top:53px;
+        bottom:35px;
+
+        font-size:7px;
+        line-height:1.35;
+    }
+
+    #bottom{
+        bottom:4px;
+        height:20px;
+        padding-top:4px;
+    }
+
+    .warning{
+        font-size:35px;
+    }
+
+    .hacked{
+        margin-top:7px;
+        font-size:34px;
+    }
+
+    .critical{
+        margin-top:8px;
+        font-size:7px;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+
+<div id="terminal">
+
+    <div class="header">
+
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+
+        <span class="header-title">
+            REMOTE SECURITY MONITOR // LIVE SESSION
+        </span>
+
+    </div>
+
+
+    <div class="main">
+
+        <div class="brand">
+            SYSTEM SECURITY
+        </div>
+
+        <div class="status">
+            LIVE REMOTE ANALYSIS • SESSION ACTIVE
+        </div>
+
+
+        <div id="logs"></div>
+
+
+        <div id="bottom">
+
+            <span>
+                STATUS:
+                <span class="live">● LIVE</span>
+            </span>
+
+            <span id="counter">
+                PACKETS: 018342
+            </span>
+
+            <span id="clock">
+                00:00:00
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- FINAL SCREEN -->
+
+<div id="hackScreen">
+
+    <div class="hackBox">
+
+        <div class="warning">
+            ⚠️
+        </div>
+
+        <div class="hacked">
+            YOUR DEVICE<br>
+            HAS BEEN HACKED
+        </div>
+
+        <div class="critical">
+            ⚠ CRITICAL SECURITY BREACH DETECTED ⚠
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const logs =
+    document.getElementById("logs");
+
+const counter =
+    document.getElementById("counter");
+
+const clock =
+    document.getElementById("clock");
+
+const terminal =
+    document.getElementById("terminal");
+
+const hackScreen =
+    document.getElementById("hackScreen");
+
+
+let packets = 18342;
+
+let started = Date.now();
+
+
+/* RANDOM HELPERS */
+
+function rand(min,max){
+
+    return Math.floor(
+        Math.random()*(max-min+1)
+    ) + min;
+}
+
+
+function hex(length){
+
+    const chars =
+        "0123456789abcdef";
+
+    let result = "";
+
+    for(let i=0;i<length;i++){
+
+        result +=
+            chars[
+                Math.floor(
+                    Math.random()*chars.length
+                )
+            ];
+    }
+
+    return result;
+}
+
+
+function ip(){
+
+    return `${rand(10,223)}.${rand(0,255)}.${rand(0,255)}.${rand(1,254)}`;
+
+}
+
+
+function now(){
+
+    const d = new Date();
+
+    return d.toLocaleTimeString(
+        "en-GB",
+        {
+            hour12:false
+        }
+    );
+}
+
+
+/* FAKE DATA */
+
+const files = [
+
+    "system_core.dll",
+    "kernel_map.bin",
+    "session.dat",
+    "auth_cache.db",
+    "memory_map.bin",
+    "browser_store.db",
+    "network_cache.tmp",
+    "process_table.sys",
+    "security_token.dat",
+    "runtime_cache.bin",
+    "system_index.db"
+
+];
+
+
+const actions = [
+
+    "READ",
+    "SCAN",
+    "SYNC",
+    "TRACE",
+    "INDEX",
+    "ANALYZE",
+    "VERIFY",
+    "DECRYPT",
+    "TRANSFER"
+
+];
+
+
+/* CREATE LOG */
+
+function createLog(){
+
+    const random =
+        Math.random();
+
+    let type = "data";
+
+    let message;
+
+
+    if(random < .12){
+
+        type = "danger";
+
+        message =
+            `[!] SECURITY EVENT :: `
+            + `signature=${hex(8)} :: `
+            + `anomaly=${rand(11,99)}%`;
+
+    }
+
+    else if(random < .27){
+
+        type = "warn";
+
+        message =
+            `[!] VULNERABILITY :: `
+            + `port=${rand(1000,9999)} :: `
+            + `risk=${rand(61,99)}%`;
+
+    }
+
+    else if(random < .58){
+
+        type = "ok";
+
+        message =
+            `[+] `
+            + actions[
+                rand(0,actions.length-1)
+            ]
+            + ` :: `
+            + files[
+                rand(0,files.length-1)
+            ]
+            + ` :: `
+            + rand(12,998)
+            + `KB`;
+
+    }
+
+    else{
+
+        type = "data";
+
+        message =
+            `[>] SESSION `
+            + hex(6).toUpperCase()
+            + ` :: `
+            + ip()
+            + ` :: packet=`
+            + hex(10).toUpperCase();
+
+    }
+
+
+    const row =
+        document.createElement("div");
+
+    row.className =
+        "log " + type;
+
+
+    row.innerHTML =
+        `<span class="time">`
+        + `[${now()}]`
+        + `</span> `
+        + message;
+
+
+    logs.appendChild(row);
+
+
+    /*
+       Keep only recent lines.
+    */
+
+    while(logs.children.length > 85){
+
+        logs.removeChild(
+            logs.firstChild
+        );
+
+    }
+
+
+    packets += rand(4,57);
+
+
+    counter.textContent =
+        "PACKETS: "
+        + String(packets)
+            .padStart(6,"0");
+
+}
+
+
+/* INITIAL DATA */
+
+for(let i=0;i<45;i++){
+
+    createLog();
+
+}
+
+
+/* FAST LIVE STREAM */
+
+const stream =
+    setInterval(() => {
+
+        createLog();
+
+        if(Math.random() > .45){
+
+            createLog();
+
+        }
+
+    },90);
+
+
+/* LIVE CLOCK */
+
+setInterval(() => {
+
+    const seconds =
+        Math.floor(
+            (Date.now()-started)/1000
+        );
+
+
+    const h =
+        String(
+            Math.floor(seconds/3600)
+        ).padStart(2,"0");
+
+
+    const m =
+        String(
+            Math.floor(
+                (seconds%3600)/60
+            )
+        ).padStart(2,"0");
+
+
+    const s =
+        String(
+            seconds%60
+        ).padStart(2,"0");
+
+
+    clock.textContent =
+        `${h}:${m}:${s}`;
+
+},250);
+
+
+/*
+   After the fake analysis,
+   show the final prank screen.
+*/
+
+setTimeout(() => {
+
+    clearInterval(stream);
+
+    terminal.style.display =
+        "none";
+
+    hackScreen.style.display =
+        "flex";
+
+},8500);
+
+
+/*
+   Page itself has no clickable controls.
+   Browser navigation is intentionally
+   left untouched.
+*/
+
+document.addEventListener(
+    "click",
+    function(event){
+
+        event.preventDefault();
+
+    },
+    true
+);
+
+
+document.addEventListener(
+    "contextmenu",
+    function(event){
+
+        event.preventDefault();
+
+    }
+);
+
+
+/*
+   Prevent common page shortcuts.
+*/
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        const key =
+            event.key.toLowerCase();
+
+
+        if(
+            event.key === "F12" ||
+            event.key === "F5" ||
+            (
+                event.ctrlKey &&
+                ["r","u","s"].includes(key)
+            )
+        ){
+
+            event.preventDefault();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
