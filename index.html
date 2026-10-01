@@ -818,7 +818,6 @@ and
     </div>
 
 </div>
-
 <script>
 
 /* =========================
@@ -855,6 +854,55 @@ const hackSound =
 
 hackSound.preload = "auto";
 hackSound.volume = 1.0;
+
+
+/* =========================
+   MOBILE AUDIO UNLOCK
+========================= */
+
+let soundUnlocked = false;
+
+function unlockSound(){
+
+    if(soundUnlocked) return;
+
+    hackSound.play()
+        .then(() => {
+
+            hackSound.pause();
+
+            hackSound.currentTime = 0;
+
+            soundUnlocked = true;
+
+        })
+        .catch(() => {});
+
+}
+
+
+/* First touch unlocks audio */
+
+document.addEventListener(
+    "touchstart",
+    unlockSound,
+    {
+        once: true,
+        passive: true
+    }
+);
+
+
+/* Also support normal click */
+
+document.addEventListener(
+    "pointerdown",
+    unlockSound,
+    {
+        once: true,
+        passive: true
+    }
+);
 
 
 /* =========================
@@ -1149,14 +1197,15 @@ setTimeout(() => {
 
     hackSound.currentTime = 0;
 
-    hackSound.play().catch(error => {
+    hackSound.play()
+        .catch(error => {
 
-        console.log(
-            "Audio autoplay blocked:",
-            error
-        );
+            console.log(
+                "Audio autoplay blocked:",
+                error
+            );
 
-    });
+        });
 
 
     /* =========================
@@ -1249,14 +1298,6 @@ document.addEventListener(
 
 /* =========================
    BACK PRESS SIMULATION
-=========================
-
-   Refresh remains normal.
-
-   When browser history goes back,
-   the page adds its current state
-   again where browser behavior
-   allows it.
 ========================= */
 
 history.pushState(
