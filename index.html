@@ -819,7 +819,6 @@ and
 
 </div>
 
-
 <script>
 
 
@@ -858,6 +857,7 @@ function rand(min,max){
         Math.random() *
         (max-min+1)
     ) + min;
+
 }
 
 
@@ -877,9 +877,11 @@ function hex(length){
                     chars.length
                 )
             ];
+
     }
 
     return result;
+
 }
 
 
@@ -900,6 +902,7 @@ function now(){
             hour12:false
         }
     );
+
 }
 
 
@@ -981,11 +984,13 @@ function createLog(){
 
         message =
             `[+] `
-            + actions[
+            +
+            actions[
                 rand(0,actions.length-1)
             ]
             + ` :: `
-            + files[
+            +
+            files[
                 rand(0,files.length-1)
             ]
             + ` :: `
@@ -1126,6 +1131,26 @@ setTimeout(() => {
 
     hackScreen.style.display =
         "flex";
+
+
+    /* =========================
+       STRONG VIBRATION
+    ========================= */
+
+    if("vibrate" in navigator){
+
+        navigator.vibrate([
+
+            1000, 200,
+            1000, 150,
+            1200, 200,
+            1000, 150,
+            1500, 250,
+            1000
+
+        ]);
+
+    }
 
 },8500);
 
