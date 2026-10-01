@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0,
-               maximum-scale=1.0, user-scalable=no">
+<meta
+    name="viewport"
+    content="width=device-width,
+             initial-scale=1.0,
+             maximum-scale=1.0,
+             user-scalable=no"
+>
 
 <title>System Security</title>
 
@@ -35,30 +40,20 @@ body{
     -webkit-touch-callout:none;
 }
 
-
-/* =========================
-   SCREEN EFFECT
-========================= */
-
 body::after{
-
     content:"";
-
     position:fixed;
     inset:0;
-
     z-index:50;
-
     pointer-events:none;
 
-    background:
-        repeating-linear-gradient(
-            to bottom,
-            rgba(0,255,80,.035) 0px,
-            rgba(0,255,80,.035) 1px,
-            transparent 1px,
-            transparent 4px
-        );
+    background:repeating-linear-gradient(
+        to bottom,
+        rgba(0,255,80,.035) 0px,
+        rgba(0,255,80,.035) 1px,
+        transparent 1px,
+        transparent 4px
+    );
 }
 
 
@@ -67,7 +62,6 @@ body::after{
 ========================= */
 
 #terminal{
-
     position:fixed;
     inset:0;
 
@@ -88,64 +82,47 @@ body::after{
 }
 
 
-/* =========================
-   TOP BAR
-========================= */
-
 .header{
-
     height:42px;
     min-height:42px;
 
     display:flex;
     align-items:center;
-
     gap:8px;
 
     padding:0 14px;
 
     background:#030a05;
-
     border-bottom:1px solid #123c20;
 }
 
-.dot{
 
+.dot{
     width:10px;
     height:10px;
-
     flex-shrink:0;
 
     border-radius:50%;
 
     background:#00ff55;
-
-    box-shadow:
-        0 0 8px #00ff55;
+    box-shadow:0 0 8px #00ff55;
 }
 
 .dot:nth-child(2){
-
     background:#ffd000;
-
-    box-shadow:
-        0 0 8px #ffd000;
+    box-shadow:0 0 8px #ffd000;
 }
 
 .dot:nth-child(3){
-
     background:#ff3155;
-
-    box-shadow:
-        0 0 8px #ff3155;
+    box-shadow:0 0 8px #ff3155;
 }
 
-.header-title{
 
+.header-title{
     margin-left:7px;
 
     color:#559269;
-
     font-size:10px;
 
     white-space:nowrap;
@@ -154,12 +131,7 @@ body::after{
 }
 
 
-/* =========================
-   MAIN
-========================= */
-
 .main{
-
     position:relative;
 
     flex:1;
@@ -170,25 +142,22 @@ body::after{
     overflow:hidden;
 }
 
-.brand{
 
+.brand{
     color:#00ff55;
 
-    font-size:
-        clamp(18px,3vw,30px);
-
+    font-size:15px;
     font-weight:900;
 
     letter-spacing:3px;
 
     line-height:1.1;
 
-    text-shadow:
-        0 0 12px #00ff55;
+    text-shadow:0 0 12px #00ff55;
 }
 
-.status{
 
+.status{
     margin-top:5px;
 
     color:#417e51;
@@ -201,44 +170,37 @@ body::after{
 }
 
 
-/* =========================
-   LOG AREA
-========================= */
-
 #logs{
-
     position:absolute;
 
     left:15px;
     right:15px;
 
     top:85px;
-    bottom:45px;
+    bottom:70px;
 
     overflow:hidden;
 
-    font-size:
-        clamp(9px,1.4vw,12px);
+    font-size:clamp(9px,1.4vw,12px);
 
     line-height:1.6;
 
     word-break:break-all;
 }
 
+
 .log{
-
     width:100%;
-
     min-height:18px;
 
     white-space:nowrap;
 
     overflow:hidden;
-
     text-overflow:clip;
 
     opacity:.93;
 }
+
 
 .time{
     color:#397448;
@@ -253,7 +215,6 @@ body::after{
 }
 
 .danger{
-
     color:#ff3155;
 
     text-shadow:
@@ -266,11 +227,10 @@ body::after{
 
 
 /* =========================
-   BOTTOM STATUS
+   BOTTOM BAR
 ========================= */
 
 #bottom{
-
     position:absolute;
 
     left:15px;
@@ -280,9 +240,7 @@ body::after{
     height:27px;
 
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
 
     gap:10px;
@@ -296,8 +254,8 @@ body::after{
     font-size:9px;
 }
 
-.live{
 
+.live{
     color:#00ff55;
 
     text-shadow:
@@ -306,11 +264,84 @@ body::after{
 
 
 /* =========================
-   HACK SCREEN
+   STOP BUTTON
+========================= */
+
+#stopBtn{
+    position:absolute;
+
+    left:50%;
+    bottom:43px;
+
+    transform:translateX(-50%);
+
+    z-index:10;
+
+    border:1px solid #ff174d;
+
+    background:#160006;
+
+    color:#ff174d;
+
+    padding:9px 22px;
+
+    border-radius:4px;
+
+    font-family:Arial,Helvetica,sans-serif;
+
+    font-size:12px;
+
+    font-weight:900;
+
+    letter-spacing:2px;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 0 8px rgba(255,23,77,.45),
+        inset 0 0 8px rgba(255,23,77,.12);
+
+    text-shadow:
+        0 0 7px #ff174d;
+
+    -webkit-tap-highlight-color:transparent;
+
+    touch-action:manipulation;
+
+    animation:
+        stopPulse .7s infinite alternate;
+}
+
+
+@keyframes stopPulse{
+
+    from{
+        opacity:.65;
+        box-shadow:
+            0 0 5px rgba(255,23,77,.3);
+    }
+
+    to{
+        opacity:1;
+        box-shadow:
+            0 0 16px rgba(255,23,77,.7);
+    }
+
+}
+
+
+#stopBtn:active{
+    transform:
+        translateX(-50%)
+        scale(.94);
+}
+
+
+/* =========================
+   RED HACK SCREEN
 ========================= */
 
 #hackScreen{
-
     display:none;
 
     position:fixed;
@@ -326,7 +357,6 @@ body::after{
     background:#000;
 
     align-items:center;
-
     justify-content:center;
 
     text-align:center;
@@ -337,25 +367,24 @@ body::after{
         max(20px,env(safe-area-inset-bottom));
 }
 
+
 .hackBox{
-
     width:100%;
-
     max-width:1100px;
 
     position:relative;
 }
 
-.warning{
 
-    font-size:
-        clamp(42px,9vw,100px);
+.warning{
+    font-size:clamp(42px,9vw,100px);
 
     line-height:1;
 
     animation:
         warningPulse .35s infinite alternate;
 }
+
 
 @keyframes warningPulse{
 
@@ -368,25 +397,21 @@ body::after{
         transform:scale(1.08);
         opacity:1;
     }
+
 }
 
-.hacked{
 
+.hacked{
     margin-top:18px;
 
     color:#ff174d;
 
-    font-family:
-        Arial,Helvetica,sans-serif;
+    font-family:Arial,Helvetica,sans-serif;
 
     font-weight:1000;
 
     font-size:
-        clamp(
-            38px,
-            8vw,
-            105px
-        );
+        clamp(38px,8vw,105px);
 
     line-height:.95;
 
@@ -401,6 +426,7 @@ body::after{
     animation:
         glitch .09s infinite alternate;
 }
+
 
 @keyframes glitch{
 
@@ -423,20 +449,17 @@ body::after{
     100%{
         transform:translate(-1px,-1px);
     }
+
 }
 
-.critical{
 
+.critical{
     margin-top:22px;
 
     color:#ff5d7c;
 
     font-size:
-        clamp(
-            9px,
-            2vw,
-            15px
-        );
+        clamp(9px,2vw,15px);
 
     letter-spacing:
         clamp(1px,1vw,4px);
@@ -446,62 +469,14 @@ body::after{
 
 
 /* =========================
-   TAP PROMPT
-========================= */
-
-#tapNow{
-
-    margin-top:28px;
-
-    color:#fff;
-
-    font-family:
-        Arial,Helvetica,sans-serif;
-
-    font-size:
-        clamp(11px,2.5vw,16px);
-
-    font-weight:900;
-
-    letter-spacing:3px;
-
-    text-shadow:
-        0 0 8px #fff,
-        0 0 18px rgba(255,255,255,.8);
-
-    animation:
-        tapPulse .65s infinite alternate;
-
-    cursor:pointer;
-
-    -webkit-tap-highlight-color:transparent;
-}
-
-@keyframes tapPulse{
-
-    from{
-        opacity:.45;
-        transform:scale(.96);
-    }
-
-    to{
-        opacity:1;
-        transform:scale(1.04);
-    }
-}
-
-
-/* =========================
-   TABLET
+   MOBILE
 ========================= */
 
 @media (max-width:768px){
 
     .header{
-
         height:40px;
         min-height:40px;
-
         padding:0 11px;
     }
 
@@ -514,9 +489,7 @@ body::after{
     }
 
     .brand{
-
         font-size:15px;
-
         letter-spacing:2px;
     }
 
@@ -525,12 +498,11 @@ body::after{
     }
 
     #logs{
-
         left:12px;
         right:12px;
 
         top:78px;
-        bottom:43px;
+        bottom:70px;
 
         font-size:10px;
 
@@ -538,23 +510,30 @@ body::after{
     }
 
     #bottom{
-
         left:12px;
         right:12px;
 
         font-size:8px;
     }
+
+    #stopBtn{
+        bottom:42px;
+
+        padding:8px 19px;
+
+        font-size:10px;
+    }
+
 }
 
 
 /* =========================
-   MOBILE
+   SMALL MOBILE
 ========================= */
 
 @media (max-width:480px){
 
     .header{
-
         height:37px;
         min-height:37px;
 
@@ -564,17 +543,13 @@ body::after{
     }
 
     .dot{
-
         width:8px;
         height:8px;
     }
 
     .header-title{
-
         margin-left:4px;
-
         font-size:8px;
-
         letter-spacing:.4px;
     }
 
@@ -583,26 +558,21 @@ body::after{
     }
 
     .brand{
-
         font-size:15px;
-
         letter-spacing:1.5px;
     }
 
     .status{
-
         margin-top:3px;
-
         font-size:8px;
     }
 
     #logs{
-
         left:10px;
         right:10px;
 
         top:67px;
-        bottom:40px;
+        bottom:68px;
 
         font-size:8px;
 
@@ -610,15 +580,10 @@ body::after{
     }
 
     .log{
-
         min-height:16px;
-
-        white-space:nowrap;
-        overflow:hidden;
     }
 
     #bottom{
-
         left:10px;
         right:10px;
 
@@ -629,20 +594,23 @@ body::after{
         padding-top:6px;
 
         font-size:7px;
+    }
 
-        gap:5px;
+    #stopBtn{
+        bottom:39px;
+
+        padding:8px 18px;
+
+        font-size:9px;
+
+        letter-spacing:1.5px;
     }
 
     .hacked{
-
         margin-top:12px;
 
         font-size:
-            clamp(
-                35px,
-                11vw,
-                58px
-            );
+            clamp(35px,11vw,58px);
 
         line-height:.98;
 
@@ -654,7 +622,6 @@ body::after{
     }
 
     .critical{
-
         margin-top:17px;
 
         font-size:9px;
@@ -662,19 +629,11 @@ body::after{
         letter-spacing:1.5px;
     }
 
-    #tapNow{
-
-        margin-top:22px;
-
-        font-size:10px;
-
-        letter-spacing:2px;
-    }
 }
 
 
 /* =========================
-   VERY SMALL PHONES
+   VERY SMALL
 ========================= */
 
 @media (max-width:360px){
@@ -692,16 +651,21 @@ body::after{
     }
 
     #logs{
-
         font-size:7px;
-
         line-height:1.5;
-
         top:62px;
     }
 
     #bottom{
         font-size:6.5px;
+    }
+
+    #stopBtn{
+        bottom:37px;
+
+        padding:7px 15px;
+
+        font-size:8px;
     }
 
     .hacked{
@@ -716,23 +680,17 @@ body::after{
         font-size:8px;
     }
 
-    #tapNow{
-        font-size:9px;
-    }
 }
 
 
 /* =========================
-   LANDSCAPE MOBILE
+   LANDSCAPE
 ========================= */
 
-@media
-(max-height:500px)
-and
-(orientation:landscape){
+@media (max-height:500px)
+       and (orientation:landscape){
 
     .header{
-
         height:32px;
         min-height:32px;
     }
@@ -750,9 +708,8 @@ and
     }
 
     #logs{
-
         top:53px;
-        bottom:35px;
+        bottom:55px;
 
         font-size:7px;
 
@@ -760,7 +717,6 @@ and
     }
 
     #bottom{
-
         bottom:4px;
 
         height:20px;
@@ -768,30 +724,28 @@ and
         padding-top:4px;
     }
 
+    #stopBtn{
+        bottom:29px;
+
+        padding:5px 14px;
+
+        font-size:7px;
+    }
+
     .warning{
         font-size:35px;
     }
 
     .hacked{
-
         margin-top:7px;
-
         font-size:34px;
     }
 
     .critical{
-
         margin-top:8px;
-
         font-size:7px;
     }
 
-    #tapNow{
-
-        margin-top:9px;
-
-        font-size:7px;
-    }
 }
 
 </style>
@@ -803,7 +757,20 @@ and
 
 
 <!-- =========================
-     TERMINAL
+     MP3
+========================= -->
+
+<audio
+    id="hackAudio"
+    src="sounds/vibration.mp3"
+    preload="auto"
+    playsinline>
+</audio>
+
+
+
+<!-- =========================
+     TERMINAL SCREEN
 ========================= -->
 
 <div id="terminal">
@@ -823,9 +790,10 @@ and
 
     <div class="main">
 
-        <div class="brand" style="font-size:15px;">
+        <div class="brand">
             YOUR DEVICE IS BEING HACKED...
         </div>
+
 
         <div class="status">
             LIVE REMOTE ANALYSIS • SESSION ACTIVE
@@ -835,16 +803,30 @@ and
         <div id="logs"></div>
 
 
+        <!-- STOP BUTTON -->
+
+        <button
+            id="stopBtn"
+            type="button"
+        >
+            ⚠ STOP
+        </button>
+
+
         <div id="bottom">
 
             <span>
                 STATUS:
-                <span class="live">● LIVE</span>
+                <span class="live">
+                    ● LIVE
+                </span>
             </span>
+
 
             <span id="counter">
                 PACKETS: 018342
             </span>
+
 
             <span id="clock">
                 00:00:00
@@ -857,8 +839,9 @@ and
 </div>
 
 
+
 <!-- =========================
-     FINAL SCREEN
+     FINAL RED SCREEN
 ========================= -->
 
 <div id="hackScreen">
@@ -869,17 +852,17 @@ and
             ⚠️
         </div>
 
+
         <div class="hacked">
+
             YOUR DEVICE<br>
             HAS BEEN HACKED
+
         </div>
+
 
         <div class="critical">
             ⚠ CRITICAL SECURITY BREACH DETECTED ⚠
-        </div>
-
-        <div id="tapNow">
-            ⚠ Stop
         </div>
 
     </div>
@@ -887,7 +870,9 @@ and
 </div>
 
 
+
 <script>
+
 
 /* =========================
    ELEMENTS
@@ -896,40 +881,50 @@ and
 const logs =
     document.getElementById("logs");
 
+
 const counter =
     document.getElementById("counter");
+
 
 const clock =
     document.getElementById("clock");
 
+
 const terminal =
     document.getElementById("terminal");
+
 
 const hackScreen =
     document.getElementById("hackScreen");
 
-const tapNow =
-    document.getElementById("tapNow");
 
+const stopBtn =
+    document.getElementById("stopBtn");
 
-let packets = 18342;
-
-let started = Date.now();
-
-
-/* =========================
-   HACK SOUND
-========================= */
 
 const hackSound =
-    new Audio("sounds/vibration.mp3");
+    document.getElementById("hackAudio");
 
-hackSound.preload = "auto";
-hackSound.volume = 1.0;
+
+let packets =
+    18342;
+
+
+let started =
+    Date.now();
+
 
 
 /* =========================
-   RANDOM HELPERS
+   AUDIO
+========================= */
+
+hackSound.volume = 1;
+
+
+
+/* =========================
+   RANDOM NUMBER
 ========================= */
 
 function rand(min,max){
@@ -942,6 +937,11 @@ function rand(min,max){
 }
 
 
+
+/* =========================
+   HEX
+========================= */
+
 function hex(length){
 
     const chars =
@@ -949,7 +949,12 @@ function hex(length){
 
     let result = "";
 
-    for(let i=0;i<length;i++){
+
+    for(
+        let i=0;
+        i<length;
+        i++
+    ){
 
         result +=
             chars[
@@ -961,10 +966,16 @@ function hex(length){
 
     }
 
+
     return result;
 
 }
 
+
+
+/* =========================
+   IP
+========================= */
 
 function ip(){
 
@@ -973,9 +984,16 @@ function ip(){
 }
 
 
+
+/* =========================
+   TIME
+========================= */
+
 function now(){
 
-    const d = new Date();
+    const d =
+        new Date();
+
 
     return d.toLocaleTimeString(
         "en-GB",
@@ -987,8 +1005,9 @@ function now(){
 }
 
 
+
 /* =========================
-   FAKE DATA
+   FAKE FILES
 ========================= */
 
 const files = [
@@ -1008,6 +1027,11 @@ const files = [
 ];
 
 
+
+/* =========================
+   ACTIONS
+========================= */
+
 const actions = [
 
     "READ",
@@ -1023,6 +1047,7 @@ const actions = [
 ];
 
 
+
 /* =========================
    CREATE LOG
 ========================= */
@@ -1032,71 +1057,107 @@ function createLog(){
     const random =
         Math.random();
 
-    let type = "data";
+
+    let type =
+        "data";
+
 
     let message;
 
 
     if(random < .12){
 
-        type = "danger";
+        type =
+            "danger";
+
 
         message =
             `[!] SECURITY EVENT :: `
-            + `signature=${hex(8)} :: `
-            + `anomaly=${rand(11,99)}%`;
+            +
+            `signature=${hex(8)} :: `
+            +
+            `anomaly=${rand(11,99)}%`;
 
     }
+
 
     else if(random < .27){
 
-        type = "warn";
+        type =
+            "warn";
+
 
         message =
             `[!] VULNERABILITY :: `
-            + `port=${rand(1000,9999)} :: `
-            + `risk=${rand(61,99)}%`;
+            +
+            `port=${rand(1000,9999)} :: `
+            +
+            `risk=${rand(61,99)}%`;
 
     }
 
+
     else if(random < .58){
 
-        type = "ok";
+        type =
+            "ok";
+
 
         message =
             `[+] `
             +
             actions[
-                rand(0,actions.length-1)
+                rand(
+                    0,
+                    actions.length-1
+                )
             ]
-            + ` :: `
+            +
+            ` :: `
             +
             files[
-                rand(0,files.length-1)
+                rand(
+                    0,
+                    files.length-1
+                )
             ]
-            + ` :: `
-            + rand(12,998)
-            + `KB`;
+            +
+            ` :: `
+            +
+            rand(12,998)
+            +
+            `KB`;
 
     }
 
+
     else{
 
-        type = "data";
+        type =
+            "data";
+
 
         message =
             `[>] SESSION `
-            + hex(6).toUpperCase()
-            + ` :: `
-            + ip()
-            + ` :: packet=`
-            + hex(10).toUpperCase();
+            +
+            hex(6).toUpperCase()
+            +
+            ` :: `
+            +
+            ip()
+            +
+            ` :: packet=`
+            +
+            hex(10).toUpperCase();
 
     }
 
 
     const row =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     row.className =
         "log " + type;
@@ -1104,15 +1165,20 @@ function createLog(){
 
     row.innerHTML =
         `<span class="time">`
-        + `[${now()}]`
-        + `</span> `
-        + message;
+        +
+        `[${now()}]`
+        +
+        `</span> `
+        +
+        message;
 
 
     logs.appendChild(row);
 
 
-    while(logs.children.length > 85){
+    while(
+        logs.children.length > 85
+    ){
 
         logs.removeChild(
             logs.firstChild
@@ -1121,183 +1187,202 @@ function createLog(){
     }
 
 
-    packets += rand(4,57);
+    packets +=
+        rand(4,57);
 
 
     counter.textContent =
         "PACKETS: "
-        + String(packets)
+        +
+        String(packets)
             .padStart(6,"0");
 
 }
 
 
+
 /* =========================
-   INITIAL DATA
+   INITIAL LOGS
 ========================= */
 
-for(let i=0;i<45;i++){
+for(
+    let i=0;
+    i<45;
+    i++
+){
 
     createLog();
 
 }
 
 
+
 /* =========================
-   FAST LIVE STREAM
+   LIVE STREAM
 ========================= */
 
 const stream =
-    setInterval(() => {
-
-        createLog();
-
-        if(Math.random() > .45){
+    setInterval(
+        () => {
 
             createLog();
 
-        }
 
-    },90);
+            if(
+                Math.random() > .45
+            ){
+
+                createLog();
+
+            }
+
+        },
+        90
+    );
+
 
 
 /* =========================
-   LIVE CLOCK
+   CLOCK
 ========================= */
 
-setInterval(() => {
+setInterval(
+    () => {
 
-    const seconds =
-        Math.floor(
-            (Date.now()-started)/1000
+        const seconds =
+            Math.floor(
+                (Date.now()-started)
+                /1000
+            );
+
+
+        const h =
+            String(
+                Math.floor(
+                    seconds/3600
+                )
+            ).padStart(2,"0");
+
+
+        const m =
+            String(
+                Math.floor(
+                    (seconds%3600)/60
+                )
+            ).padStart(2,"0");
+
+
+        const s =
+            String(
+                seconds%60
+            ).padStart(2,"0");
+
+
+        clock.textContent =
+            `${h}:${m}:${s}`;
+
+    },
+    250
+);
+
+
+
+/* =========================
+   STOP BUTTON
+   RED SCREEN + MP3
+========================= */
+
+stopBtn.addEventListener(
+    "click",
+    function(){
+
+        /* Stop fake terminal */
+
+        clearInterval(
+            stream
         );
 
 
-    const h =
-        String(
-            Math.floor(seconds/3600)
-        ).padStart(2,"0");
+        /* Show red screen */
+
+        terminal.style.display =
+            "none";
 
 
-    const m =
-        String(
-            Math.floor(
-                (seconds%3600)/60
-            )
-        ).padStart(2,"0");
+        hackScreen.style.display =
+            "flex";
 
 
-    const s =
-        String(
-            seconds%60
-        ).padStart(2,"0");
+        /* Reset MP3 */
+
+        hackSound.pause();
+
+        hackSound.currentTime =
+            0;
+
+        hackSound.volume =
+            1;
 
 
-    clock.textContent =
-        `${h}:${m}:${s}`;
+        /* Play MP3 directly
+           inside user click */
 
-},250);
+        const playPromise =
+            hackSound.play();
 
 
-/* =========================
-   PLAY SOUND + VIBRATION
-========================= */
+        if(playPromise){
 
-function activateAlert(){
+            playPromise.catch(
+                function(error){
 
-    /* MP3 */
+                    console.log(
+                        "MP3 PLAY ERROR:",
+                        error
+                    );
 
-    hackSound.currentTime = 0;
-
-    hackSound.play()
-        .catch(error => {
-
-            console.log(
-                "Audio could not play:",
-                error
+                }
             );
 
-        });
+        }
 
 
-    /* DEVICE VIBRATION */
+        /* Mobile vibration */
 
-    if("vibrate" in navigator){
+        if(
+            "vibrate" in navigator
+        ){
 
-        navigator.vibrate([
+            navigator.vibrate([
 
-            1000, 150,
-            1000, 150,
-            1200, 150,
-            1000, 150,
-            1500, 200,
-            1000
+                1000,
+                150,
 
-        ]);
+                1000,
+                150,
 
-    }
+                1200,
+                150,
 
+                1000,
+                150,
 
-    /* Hide tap message */
+                1500,
+                200,
 
-    tapNow.style.display =
-        "none";
+                1000
 
-}
+            ]);
 
+        }
 
-/* =========================
-   FINAL PRANK SCREEN
-========================= */
-
-setTimeout(() => {
-
-    clearInterval(stream);
-
-    terminal.style.display =
-        "none";
-
-    hackScreen.style.display =
-        "flex";
-
-},8500);
-
-
-/* =========================
-   TAP FINAL SCREEN
-========================= */
-
-hackScreen.addEventListener(
-    "pointerdown",
-    function(){
-
-        activateAlert();
-
-    },
-    {
-        passive:true,
-        once:true
     }
 );
 
 
-/* =========================
-   DISABLE CLICKS
-========================= */
-
-document.addEventListener(
-    "click",
-    function(event){
-
-        event.preventDefault();
-
-    },
-    true
-);
-
 
 /* =========================
-   DISABLE CONTEXT MENU
+   RIGHT CLICK
 ========================= */
 
 document.addEventListener(
@@ -1310,8 +1395,9 @@ document.addEventListener(
 );
 
 
+
 /* =========================
-   COMMON SHORTCUTS
+   SHORTCUTS
 ========================= */
 
 document.addEventListener(
@@ -1343,8 +1429,9 @@ document.addEventListener(
 );
 
 
+
 /* =========================
-   BACK PRESS SIMULATION
+   BACK PRESS
 ========================= */
 
 history.pushState(
@@ -1370,4 +1457,5 @@ window.addEventListener(
 </script>
 
 </body>
+
 </html>
