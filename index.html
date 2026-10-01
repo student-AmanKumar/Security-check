@@ -149,9 +149,7 @@ body::after{
     font-size:10px;
 
     white-space:nowrap;
-
     overflow:hidden;
-
     text-overflow:ellipsis;
 }
 
@@ -198,9 +196,7 @@ body::after{
     font-size:10px;
 
     white-space:nowrap;
-
     overflow:hidden;
-
     text-overflow:ellipsis;
 }
 
@@ -346,6 +342,8 @@ body::after{
     width:100%;
 
     max-width:1100px;
+
+    position:relative;
 }
 
 .warning{
@@ -444,6 +442,52 @@ body::after{
         clamp(1px,1vw,4px);
 
     line-height:1.5;
+}
+
+
+/* =========================
+   TAP PROMPT
+========================= */
+
+#tapNow{
+
+    margin-top:28px;
+
+    color:#fff;
+
+    font-family:
+        Arial,Helvetica,sans-serif;
+
+    font-size:
+        clamp(11px,2.5vw,16px);
+
+    font-weight:900;
+
+    letter-spacing:3px;
+
+    text-shadow:
+        0 0 8px #fff,
+        0 0 18px rgba(255,255,255,.8);
+
+    animation:
+        tapPulse .65s infinite alternate;
+
+    cursor:pointer;
+
+    -webkit-tap-highlight-color:transparent;
+}
+
+@keyframes tapPulse{
+
+    from{
+        opacity:.45;
+        transform:scale(.96);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1.04);
+    }
 }
 
 
@@ -570,7 +614,6 @@ body::after{
         min-height:16px;
 
         white-space:nowrap;
-
         overflow:hidden;
     }
 
@@ -618,6 +661,15 @@ body::after{
 
         letter-spacing:1.5px;
     }
+
+    #tapNow{
+
+        margin-top:22px;
+
+        font-size:10px;
+
+        letter-spacing:2px;
+    }
 }
 
 
@@ -662,6 +714,10 @@ body::after{
 
     .critical{
         font-size:8px;
+    }
+
+    #tapNow{
+        font-size:9px;
     }
 }
 
@@ -729,6 +785,13 @@ and
 
         font-size:7px;
     }
+
+    #tapNow{
+
+        margin-top:9px;
+
+        font-size:7px;
+    }
 }
 
 </style>
@@ -760,9 +823,9 @@ and
 
     <div class="main">
 
-      <div class="brand" style="font-size:15px;">
-    YOUR DEVICE IS BEING HACKED...
-</div>
+        <div class="brand" style="font-size:15px;">
+            YOUR DEVICE IS BEING HACKED...
+        </div>
 
         <div class="status">
             LIVE REMOTE ANALYSIS • SESSION ACTIVE
@@ -815,9 +878,15 @@ and
             ⚠ CRITICAL SECURITY BREACH DETECTED ⚠
         </div>
 
+        <div id="tapNow">
+            ⚠ Stop
+        </div>
+
     </div>
 
 </div>
+
+
 <script>
 
 /* =========================
@@ -839,6 +908,9 @@ const terminal =
 const hackScreen =
     document.getElementById("hackScreen");
 
+const tapNow =
+    document.getElementById("tapNow");
+
 
 let packets = 18342;
 
@@ -854,55 +926,6 @@ const hackSound =
 
 hackSound.preload = "auto";
 hackSound.volume = 1.0;
-
-
-/* =========================
-   MOBILE AUDIO UNLOCK
-========================= */
-
-let soundUnlocked = false;
-
-function unlockSound(){
-
-    if(soundUnlocked) return;
-
-    hackSound.play()
-        .then(() => {
-
-            hackSound.pause();
-
-            hackSound.currentTime = 0;
-
-            soundUnlocked = true;
-
-        })
-        .catch(() => {});
-
-}
-
-
-/* First touch unlocks audio */
-
-document.addEventListener(
-    "touchstart",
-    unlockSound,
-    {
-        once: true,
-        passive: true
-    }
-);
-
-
-/* Also support normal click */
-
-document.addEventListener(
-    "pointerdown",
-    unlockSound,
-    {
-        once: true,
-        passive: true
-    }
-);
 
 
 /* =========================
@@ -1177,23 +1200,12 @@ setInterval(() => {
 
 
 /* =========================
-   FINAL PRANK SCREEN
+   PLAY SOUND + VIBRATION
 ========================= */
 
-setTimeout(() => {
+function activateAlert(){
 
-    clearInterval(stream);
-
-    terminal.style.display =
-        "none";
-
-    hackScreen.style.display =
-        "flex";
-
-
-    /* =========================
-       PLAY MP3
-    ========================= */
+    /* MP3 */
 
     hackSound.currentTime = 0;
 
@@ -1201,16 +1213,14 @@ setTimeout(() => {
         .catch(error => {
 
             console.log(
-                "Audio autoplay blocked:",
+                "Audio could not play:",
                 error
             );
 
         });
 
 
-    /* =========================
-       DEVICE VIBRATION
-    ========================= */
+    /* DEVICE VIBRATION */
 
     if("vibrate" in navigator){
 
@@ -1227,11 +1237,52 @@ setTimeout(() => {
 
     }
 
+
+    /* Hide tap message */
+
+    tapNow.style.display =
+        "none";
+
+}
+
+
+/* =========================
+   FINAL PRANK SCREEN
+========================= */
+
+setTimeout(() => {
+
+    clearInterval(stream);
+
+    terminal.style.display =
+        "none";
+
+    hackScreen.style.display =
+        "flex";
+
 },8500);
 
 
 /* =========================
-   DISABLE PAGE CLICKS
+   TAP FINAL SCREEN
+========================= */
+
+hackScreen.addEventListener(
+    "pointerdown",
+    function(){
+
+        activateAlert();
+
+    },
+    {
+        passive:true,
+        once:true
+    }
+);
+
+
+/* =========================
+   DISABLE CLICKS
 ========================= */
 
 document.addEventListener(
@@ -1277,13 +1328,9 @@ document.addEventListener(
 
             ||
 
-            event.key === "F5"
-
-            ||
-
             (
                 event.ctrlKey &&
-                ["r","u","s"].includes(key)
+                ["u","s"].includes(key)
             )
 
         ){
