@@ -660,7 +660,7 @@ body::after{
     <div class="main">
 
         <div class="brand">
-            SYSTEM SECURITY
+            YOUR DATA IS BEING HACKED...
         </div>
 
         <div class="status">
@@ -1085,7 +1085,12 @@ history.pushState(null, "", location.href);
 window.addEventListener("popstate", function () {
     history.pushState(null, "", location.href);
 });
+// Keep prank state after page reload
+sessionStorage.setItem("prankActive", "true");
 
+window.addEventListener("beforeunload", function () {
+    sessionStorage.setItem("prankActive", "true");
+});
 </script>
 
 </body>
